@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <title>优师计划教师招聘信息</title>
+	<style>
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            font-family: 'Inter', 'PingFang SC', system-ui, sans-serif;
+            min-height: 100vh;
+        }
+		
+		/* 时间显示样式 */
+		        #time-container {
+		            position: fixed;
+		            top: 1.0rem;
+		            left: 0;
+		            width: 100vw;
+		            background: transparent;
+		            color: #fff;
+		            padding: 17px;
+		            text-align: center;
+		            font-family: Arial, sans-serif;
+		            font-size: 1.0em;
+		            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+		            z-index: 1000;
+		        }
+				
+		/* 时间数字样式 */
+				.time-digit {
+				    color: #21d9fe;
+				    font-weight: bold;
+				    text-shadow: 0 0 5px rgba(76,175,80,0.5);
+			    }
+	
+        nav {
+            background: linear-gradient(135deg, #8a872d 0%, #43cdff 100%);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        nav a {
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #93c5fd;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .province-btn {
+            background: white;
+            border: 2px solid #2563eb;
+            color: #2563eb;
+            border-radius: 9999px;
+            padding: 0.75rem 2rem;
+            margin: 0.5rem;
+            box-shadow: 0 2px 4px rgba(37, 99, 235, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .province-btn:hover {
+            background: #2563eb;
+            color: white;
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(229, 231, 235, 0.5);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(147, 197, 253, 0.1),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        h1 {
+            position: relative;
+            padding-bottom: 1rem;
+            background: linear-gradient(135deg, #8a0884 0%, #b4eba0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem;
+            text-align: center;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 4px;
+            background: #2563eb;
+            border-radius: 2px;
+        }
+
+        footer {
+            background: rgba(108, 199, 166, 0.9);
+            backdrop-filter: blur(10px);
+            position: relative;
+            margin-top: 4rem;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 0;
+            right: 0;
+            height: 20px;
+            background: linear-gradient(180deg, transparent 0%, rgba(30, 58, 138, 0.9) 100%);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .province-content {
+            display: none;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            nav div {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .province-btn {
+                padding: 0.5rem 1.25rem;
+                margin: 0.25rem;
+                font-size: 0.875rem;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+            }
+        }
+		
+		button:hover {
+		    transition: all 0.3s ease;
+		    opacity: 0.8;
+		}
+		
+		/* 加强文本保护 */
+		body {
+		    user-select: none !important;
+		    -webkit-user-select: none !important;
+		    -moz-user-select: none !important;
+		    -ms-user-select: none !important;
+		}
+		
+		/* 隐藏空链接 */
+		a[href="#"] {
+		    cursor: default;
+		    pointer-events: none;
+		}
+    </style>
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <nav class="flex justify-between items-center px-8 py-4">
+        <a href="#" class="text-2xl font-bold">优师计划教师招聘</a>
+        <div id="time-container"></div>
+		<div class="flex space-x-6">
+            <a href="#">自建网站👀</a>
+            <a href="#">手下留情🌹</a>
+            <a href="#">切勿攻击👍</a>
+        </div>
+    </nav>
+		
+    <!-- 省份选择区域 -->
+    <div class="container mx-auto px-4 py-8 text-center">
+        <h2 class="text-2xl font-bold mb-4">选择省份查看优师招聘信息</h2>
+        <div class="flex flex-wrap justify-center">
+            <div class="province-btn" onclick="showProvince('fanwei')">部分省份履约范围</div>
+            <div class="province-btn" onclick="showProvince('hebei')">河北</div>
+            <div class="province-btn" onclick="showProvince('shanxi')">山西</div>
+            <div class="province-btn" onclick="showProvince('neimenggu')">内蒙古</div>
+            <div class="province-btn" onclick="showProvince('jilin')">吉林</div>
+            <div class="province-btn" onclick="showProvince('heilongjiang')">黑龙江</div>
+            <div class="province-btn" onclick="showProvince('anhui')">安徽</div>
+            <div class="province-btn" onclick="showProvince('jiangxi')">江西</div>
+            <div class="province-btn" onclick="showProvince('henan')">河南</div>
+            <div class="province-btn" onclick="showProvince('hubei')">湖北</div>
+            <div class="province-btn" onclick="showProvince('hunan')">湖南</div>
+            <div class="province-btn" onclick="showProvince('guangxi')">广西</div>
+            <div class="province-btn" onclick="showProvince('chongqing')">重庆</div>
+            <div class="province-btn" onclick="showProvince('sichuan')">四川</div>
+            <div class="province-btn" onclick="showProvince('guizhou')">贵州</div>
+            <div class="province-btn" onclick="showProvince('yunnan')">云南</div>
+            <div class="province-btn" onclick="showProvince('xizang')">西藏</div>
+            <div class="province-btn" onclick="showProvince('shanxi2')">陕西</div>
+            <div class="province-btn" onclick="showProvince('qinghai')">青海</div>
+            <div class="province-btn" onclick="showProvince('gansu')">甘肃</div>
+            <div class="province-btn" onclick="showProvince('hainan')">海南</div>
+            <div class="province-btn" onclick="showProvince('ningxia')">宁夏</div>
+            <div class="province-btn" onclick="showProvince('xinjiang')">新疆</div>
+        </div>
+    </div>
+
+    <!-- 不同省份招聘内容 -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- 原有所有省份内容区块保持原样 -->
+        <!-- 部分履约范围 -->
+        <div id="fanwei" class="province-content">
+            <h1>部分省份履约范围</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h2>部分省份履约范围</h2>
+                    <p>仅供参考</p>
+                    <a href="https://mp.weixin.qq.com/s/PwFrJl8DzILifNkn6Cid3w" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 河北招聘信息 -->
+        <div id="hebei" class="province-content">
+            <h1>河北优师计划教师招聘信息</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h2>河北省国家优师毕业生岗位需求表</h2>
+                    <p>招聘要求：2025届国家优师</p>
+                    <a href="https://m.bysjy.com.cn/student/chance/newsdetails.html?token=yxqqnn2600000015&notice_id=1092395&is_new_openid=1" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <!-- 山西招聘信息 -->
+        <div id="shanxi" class="province-content">
+            <h1 class="text-center">山西优师计划教师招聘信息</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h2>山西省2025届部属优师计划师范毕业生线上双选会</h2>
+                    <p>招聘要求：2025届国家优师</p>
+                    <a href="https://m.bysjy.com.cn/student/chance/newsdetails.html?token=yxqqnn2600000015&notice_id=1115906&is_new_openid=1" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <!-- 可添加更多招聘卡片 -->
+            </div>
+        </div>
+        <!-- 内蒙古招聘信息 -->
+        <div id="neimenggu" class="province-content">
+            <h1 class="text-center">内蒙古优师计划教师招聘信息</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h2>暂时没找到🌹</h2>
+                    <p>招聘要求：暂时没找到🌹...</p>
+                    <a href="#" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <!-- 吉林招聘信息 -->
+        <div id="jilin" class="province-content">
+            <h1 class="text-center">吉林优师计划教师招聘信息</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h2>双辽市专项招聘</h2>
+                    <p>招聘要求：2025届部属优师</p>
+                    <a href="https://mp.weixin.qq.com/s/fPoNsMq5lXbBr66pBZ8kpw" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <!-- 黑龙江招聘信息 -->
+        <div id="heilongjiang" class="province-content">
+            <h1 class="text-center">黑龙江优师计划教师招聘信息</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h2>黑龙江省2025届优师计划师范生岗位需求表</h2>
+                    <p>招聘要求：2025届优师计划师范生</p>
+                    <a href="https://m.bysjy.com.cn/student/chance/newsdetails.html?token=yxqqnn2600000015&notice_id=1101995" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <!-- 安徽招聘信息 -->
+        <div id="anhui" class="province-content">
+            <h1 class="text-center">安徽优师计划教师招聘信息</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h2>安徽省2025届国家优师专项毕业生就业通知</h2>
+                    <p>招聘要求：安徽省2025届国家优师</p>
+                    <a href="https://mp.weixin.qq.com/s/WQoPYfTJgDtrgyMlH3tNHQ" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <!-- 江西招聘信息 -->
+        <div id="jiangxi" class="province-content">
+            <h1 class="text-center">江西优师计划教师招聘信息</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h2>暂时没找到🌹</h2>
+                    <p>招聘要求：暂时没找到🌹</p>
+                    <a href="#" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <!-- 河南招聘信息 -->
+        <div id="henan" class="province-content">
+            <h1 class="text-center">河南优师计划教师招聘信息</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h2>河南省2025届国家优师就业通知</h2>
+                    <p>招聘要求：2025届国家优师</p>
+                    <a href="http://m.jyt.henan.gov.cn/2025/01-22/3116326.html" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <!-- 湖北招聘信息 -->
+        <div id="hubei" class="province-content">
+            <h1 class="text-center">湖北优师计划教师招聘信息</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h2>湖北省2025国家“优师计划”师范生岗位需求</h2>
+                    <p>招聘要求：2025国家“优师计划”</p>
+                    <a href="https://mp.weixin.qq.com/s/Inv9CsNBbosvXD8yhVQ-yg" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+		    <div class="card p-6">
+                    <h2>恩施州相关县市招聘</h2>
+                    <p>招聘要求：2025国家“优师计划”</p>
+                    <a href="https://mp.weixin.qq.com/s/y7CBzyhCXO1nNBHiRtiPoA" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <!-- 湖南招聘信息 -->
+        <div id="hunan" class="province-content">
+            <h1 class="text-center">湖南优师计划教师招聘信息</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h2>2025届部属师范大学优师专项供需见面会</h2>
+                    <p>招聘要求：2025届部属师范大学优师</p>
+                    <a href="https://m.bysjy.com.cn/student/chance/newsdetails.html?token=yxqqnn2600000015&notice_id=1124432&is_new_openid=1" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+				<div class="card p-6">
+				    <h2>2025届部属师范大学优师专项岗位需求表</h2>
+				    <p>招聘要求：2025届部属优师</p>
+				    <a href="https://m.bysjy.com.cn/student/chance/newsdetails.html?token=yxqqnn2600000015&notice_id=1111392" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+            </div>
+        </div>
+        <!-- 广西招聘信息 -->
+        <div id="guangxi" class="province-content">
+            <h1 class="text-center">广西优师计划教师招聘信息</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h2>大化瑶族自治县2025年国家优师招聘</h2>
+                    <p>招聘要求：2025届国家优师</p>
+                    <a href="https://mp.weixin.qq.com/s/az77K8T8o9fTXFBnOPlgfQ" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <!-- 重庆招聘信息 -->
+        <div id="chongqing" class="province-content">
+            <h1 class="text-center">重庆优师计划教师招聘信息</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h2>开州区招聘</h2>
+                    <p>招聘要求：2025届优师计划毕业生</p>
+                    <a href="https://rlsbj.cq.gov.cn/zwxx_182/sydw/sydwgkzp2024/202411/t20241105_13772849.html" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <!-- 四川招聘信息 -->
+        <div id="sichuan" class="province-content">
+            <h1 class="text-center">四川优师计划教师招聘信息</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h2>乐山市沐川县优师招聘</h2>
+                    <p>招聘要求：2025届国家优师</p>
+                    <a href="https://mp.weixin.qq.com/s/Wy_KYvJQu9mUSnCyckfdLQ" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+				<div class="card p-6">
+				    <h2>南充市嘉陵区招聘</h2>
+				    <p>招聘要求：2025届</p>
+				    <a href="https://m.bysjy.com.cn/student/chance/newsdetails.html?token=yxqqnn2600000015&notice_id=1075037" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+				<div class="card p-6">
+				    <h2>南部县</h2>
+				    <p>招聘要求：2025届</p>
+				    <a href="https://www.scnanbu.gov.cn/xwdt/tzgg/202411/t20241127_2045661.html" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+				<div class="card p-6">
+				    <h2>屏山县</h2>
+				    <p>招聘要求：2025届</p>
+				    <a href="https://www.ybps.gov.cn/gsgg/202503/t20250331_2107124.html" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+				<div class="card p-6">
+				    <h2>宣汉县</h2>
+				    <p>招聘要求：2025届</p>
+				    <a href="http://www.xuanhan.gov.cn/xxgk-show-81528.html" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+				<div class="card p-6">
+				    <h2>广安市</h2>
+				    <p>招聘要求：2025届</p>
+				    <a href="https://mp.weixin.qq.com/s/gFI_tWi9RfnQWXZPlZKmOg" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+				<div class="card p-6">
+				    <h2>马边彝族自治县</h2>
+				    <p>招聘要求：2025届</p>
+				    <a href="http://www.lspta.com.cn/newsDetail/6036.html" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+            </div>
+        </div>
+        <!-- 贵州招聘信息 -->
+        <div id="guizhou" class="province-content">
+            <h1 class="text-center">贵州优师计划教师招聘信息</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h2>江口县教育系统招聘</h2>
+                    <p>招聘要求：2025届</p>
+                    <a href="https://mp.weixin.qq.com/s/JiwDjwtMrsWNVOYXqSaFGA" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+				<div class="card p-6">
+				    <h2>遵义市教育事业单位招聘</h2>
+				    <p>招聘要求：2025届</p>
+				    <a href="http://jyj.zunyi.gov.cn/tzgg/202503/t20250314_87176363.html?sessionid=" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+				<div class="card p-6">
+				    <h2>安龙县2025届优师招聘</h2>
+				    <p>招聘要求：2025届</p>
+				    <a href="https://www.gzal.gov.cn/xwzx/bmdt/202503/t20250310_87142771.html?sessionid=" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+				<div class="card p-6">
+				    <h2>黔西南州2025届优师计划毕业生招聘</h2>
+				    <p>招聘要求：2025届</p>
+				    <a href="https://www.qxn.gov.cn/zwgk/zfjg/zjyj_5135007/bmxxgkml_5135010/jsgz/202411/t20241107_86041729.html?sessionid=" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+				<div class="card p-6">
+				    <h2>毕节市</h2>
+				    <p>招聘要求：2025届</p>
+				    <a href="https://www.bijie.gov.cn/xxfb/tzgg/rszp/202411/t20241107_86043379.html" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+				<div class="card p-6">
+				    <h2>贞丰县</h2>
+				    <p>招聘要求：2025届</p>
+				    <a href="https://www.gzzf.gov.cn/jgsz/zfbm/jyj/gzdt/202503/t20250325_87261674.html" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+				<div class="card p-6">
+				    <h2>思南县</h2>
+				    <p>招聘要求：2025届</p>
+				    <a href="https://www.sinan.gov.cn/xwzx/tzgg/202411/t20241108_86046180.html" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+				<div class="card p-6">
+				    <h2>瓮安县</h2>
+				    <p>招聘要求：2025届</p>
+				    <a href="http://www.wengan.gov.cn/xw/tzgg/202411/t20241108_86047832.html" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+				<div class="card p-6">
+				    <h2>安顺市</h2>
+				    <p>招聘要求：2025届</p>
+				    <a href="http://jyj.anshun.gov.cn/gzdt/tzgg/202411/t20241108_86048154.html" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+				<div class="card p-6">
+				    <h2>水城区</h2>
+				    <p>招聘要求：2025届</p>
+				    <a href="http://jyj.gzlps.gov.cn/tzgg/202411/t20241109_86048822.html" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+				<div class="card p-6">
+				    <h2>长顺县</h2>
+				    <p>招聘要求：2025届</p>
+				    <a href="https://www.gzcsx.gov.cn/xwzx/tzgg/202411/t20241108_86046705.html" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+				<div class="card p-6">
+				    <h2>紫云自治县</h2>
+				    <p>招聘要求：2025届</p>
+				    <a href="http://www.gzzy.gov.cn/xwdt/gsgg/202411/t20241112_86055575.html" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+				<div class="card p-6">
+				    <h2>独山县</h2>
+				    <p>招聘要求：2025届</p>
+				    <a href="http://www.dushan.gov.cn/zwgk/rsxx/ryzp/202411/t20241108_86045272.html" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+				<div class="card p-6">
+				    <h2>兴仁市</h2>
+				    <p>招聘要求：2025届</p>
+				    <a href="http://www.gzxr.gov.cn/xwzx/zkzp/202411/t20241108_86047176.html" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+				<div class="card p-6">
+				    <h2>盘州市</h2>
+				    <p>招聘要求：2025届</p>
+				    <a href="https://www.panzhou.gov.cn/jjpz/tzgg/202411/t20241108_86048777.html" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+				<div class="card p-6">
+				    <h2>碧江区</h2>
+				    <p>招聘要求：2025届</p>
+				    <a href="https://www.bjq.gov.cn/xxgk/zfxxgkml/jcxxgk/rsxx_29796/rszl/202411/t20241108_86046447.html" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+				<div class="card p-6">
+				    <h2>石阡县</h2>
+				    <p>招聘要求：2025届</p>
+				    <a href="http://www.shiqian.gov.cn/zfbm/rlzyhshbzj/zfxxgk/fdzdgknr_5672412/jycycv2/202411/t20241108_86047913.html" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+            </div>
+        </div>
+        <!-- 云南招聘信息 -->
+        <div id="yunnan" class="province-content">
+            <h1 class="text-center">云南优师计划教师招聘信息</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h2>红河州专项招聘</h2>
+                    <p>招聘对象：2025届优师计划毕业生</p>
+                    <a href="https://www.hhzrc.cn/Article/Index/Index/show/id/15731" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+				<div class="card p-6">
+				    <h2>云南省国家优师计划岗位需求表</h2>
+				    <p>招聘对象：2025届优师计划毕业生</p>
+				    <a href="https://mp.weixin.qq.com/s/iq7BPsrYz1CquCdxQqOIvQ" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+            <div class="card p-6">
+                <h2>临沧市云县专项招聘</h2>
+                <p>招聘对象：2025届优师计划毕业生</p>
+                <a href="https://mp.weixin.qq.com/s/5E_1ZM6Y-AHyQcJ1HfFeNA" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>               
+			</div>
+			    </div>
+			</div>
+        <!-- 西藏招聘信息 -->
+        <div id="xizang" class="province-content">
+            <h1 class="text-center">西藏优师计划教师招聘信息</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h2>暂时没找到🌹</h2>
+                    <p>招聘要求：暂时没找到🌹</p>
+                    <a href="#" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <!-- 陕西招聘信息 -->
+        <div id="shanxi2" class="province-content">
+            <h1 class="text-center">陕西优师计划教师招聘信息</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h2>延长县高级中学“优师计划”招聘</h2>
+                    <p>招聘要求：2025届</p>
+                    <a href="https://m.bysjy.com.cn/student/chance/newsdetails.html?token=yxqqnn2600000015&notice_id=1107419" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+				<div class="card p-6">
+				    <h2>陕西省2025届国家“优师计划”师范生双选会</h2>
+				    <p>招聘要求：2025届</p>
+				    <a href="https://m.bysjy.com.cn/student/chance/newsdetails.html?token=yxqqnn2600000015&notice_id=1108057&sessionid=" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+				<div class="card p-6">
+				    <h2>陕西省2025届部属师优师需求表</h2>
+				    <p>招聘要求：2025届</p>
+				    <a href="https://mp.weixin.qq.com/s/8K9y8qN0nernZ9t9rEhXoQ" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+				<div class="card p-6">
+				    <h2>铜川市2025届优师招聘</h2>
+				    <p>招聘要求：2025届</p>
+				    <a href="https://rs.tongchuan.gov.cn/11/16544.jhtml" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+            </div>
+        </div>
+        <!-- 青海招聘信息 -->
+        <div id="qinghai" class="province-content">
+            <h1 class="text-center">青海优师计划教师招聘信息</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h2>暂时没找到🌹</h2>
+                    <p>招聘要求：暂时没找到🌹</p>
+                    <a href="#" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <!-- 甘肃招聘信息 -->
+        <div id="gansu" class="province-content">
+            <h1 class="text-center">甘肃优师计划教师招聘信息</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h2>平凉静宁县国家优师计划毕业生招聘</h2>
+                    <p>招聘要求：2025届</p>
+                    <a href="https://mp.weixin.qq.com/s/GG5YBkYiKAOWul5mesRaGQ" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+				<div class="card p-6">
+				    <h2>兰州市国家优师计划毕业生招聘</h2>
+				    <p>招聘要求：2025届</p>
+				    <a href="https://jyj.lanzhou.gov.cn/art/2024/11/29/art_288_1414675.html" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+				<div class="card p-6">
+				    <h2>武威市国家优师计划毕业生招聘</h2>
+				    <p>招聘要求：2025届</p>
+				    <a href="https://www.gswuwei.gov.cn/art/2025/2/17/art_177_1425968.html" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+				<div class="card p-6">
+				    <h2>协议培养师范毕业生双向选择签约活动的通知</h2>
+				    <p>招聘要求：2025届</p>
+				    <a href="https://m.bysjy.com.cn/student/chance/newsdetails.html?token=yxqqnn2600000015&notice_id=1116065" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+		    <div class="card p-6">
+		         <h2>平凉市市直教育系统第二批</h2>
+			 <p>招聘要求：2025届部属公费、优师</p>
+			 <a href="http://jyj.pingliang.gov.cn/zwgk/gkml/tzgg/art/2024/art_799dcd44b0714e2391832b12d8dad39f.html" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+		</div>
+            </div>
+        </div>
+        <!-- 海南招聘信息 -->
+        <div id="hainan" class="province-content">
+            <h1 class="text-center">海南优师计划教师招聘信息</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h2>供需见面招聘会的通知</h2>
+                    <p>招聘要求：2025届...</p>
+                    <a href="https://mp.weixin.qq.com/s/456P3Mx0-ZBvW8W9zg9oHA" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+				<div class="card p-6">
+				    <h2>海南省农垦实验中学2025届国家优师招聘</h2>
+				    <p>招聘要求：2025届...</p>
+				    <a href="https://www.nksz.com/newsinfo/8006542.html" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+				</div>
+            </div>
+        </div>
+        <!-- 宁夏招聘信息 -->
+        <div id="ningxia" class="province-content">
+            <h1 class="text-center">宁夏优师计划教师招聘信息</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h2>2025年宁夏优师毕业生双选公告</h2>
+                    <p>招聘要求：2025届...</p>
+                    <a href="https://mp.weixin.qq.com/s/PVAMXmr7lkDMg7Ntyu7WIA" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <!-- 新疆招聘信息 -->
+        <div id="xinjiang" class="province-content">
+            <h1 class="text-center">新疆优师计划教师招聘信息</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <h2>暂时没找到🌹</h2>
+                    <p>招聘要求：暂时没找到🌹...</p>
+                    <a href="#" class="text-blue-600 hover:underline">查看详情 <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="text-center py-4">
+        <p class="text-gray-200">&copy; 2025 CHEND 内容源自网络</p>
+        <button onclick="showComplaintEmail()" class="text-gray-200 hover:text-white mt-2 underline text-sm">
+            联系与投诉
+        </button>
+    </footer>
+
+    <script>
+        let activeProvince = null;
+
+        function showProvince(province) {
+            if (activeProvince) {
+                activeProvince.classList.remove('active');
+                activeProvince.style.display = 'none';
+            }
+            
+            const selected = document.getElementById(province);
+            const btn = document.querySelector(`[onclick="showProvince('${province}')"]`);
+            
+            document.querySelectorAll('.province-btn').forEach(b => {
+                b.style.backgroundColor = '#fff';
+                b.style.color = '#2563eb';
+            });
+            
+            if (selected) {
+                selected.style.display = 'block';
+                btn.style.backgroundColor = '#2563eb';
+                btn.style.color = 'white';
+                activeProvince = selected;
+                
+                // 自动滚动到内容区域
+                window.scrollTo({
+                    top: selected.offsetTop - 100,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        window.onload = function () {
+            setTimeout(() => {
+                const isTeacher = confirm('您是否确定为优师计划师范生 ？ (!建议使用电脑打开更方便观看！）');
+                if (!isTeacher) {
+                    document.body.innerHTML = `
+                        <div class="flex flex-col justify-center items-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
+                            <div class="animate-bounce text-4xl mb-4">❗👀⚠👀❗</div>
+                            <h1 class="text-2xl text-center text-gray-700 px-4">
+                                不建议您访问，<br>
+                                感谢您的理解与支持！
+                            </h1>
+                        </div>
+                    `;
+                }
+            }, 500);
+        };
+		
+		// 星期转换数组
+		        const weekDays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+		
+		        function updateTime() {
+		            const now = new Date();
+		            
+		            // 获取时间组件
+		            const year = now.getFullYear();
+		            const month = String(now.getMonth() + 1).padStart(2, '0');
+		            const date = String(now.getDate()).padStart(2, '0');
+		            const hours = String(now.getHours()).padStart(2, '0');
+		            const minutes = String(now.getMinutes()).padStart(2, '0');
+		            const seconds = String(now.getSeconds()).padStart(2, '0');
+		            const day = weekDays[now.getDay()];
+		
+		            // 创建带样式的HTML
+		            const timeString = `
+		                <span class="time-digit">${year}</span>年
+		                <span class="time-digit">${month}</span>月
+		                <span class="time-digit">${date}</span>日 
+		                ${day} 
+		                <span class="time-digit">${hours}</span>:
+		                <span class="time-digit">${minutes}</span>:
+		                <span class="time-digit">${seconds}</span>
+		            `;
+		
+		            // 更新显示
+		            document.getElementById('time-container').innerHTML = timeString;
+		        }
+		
+		        // 立即执行一次并设置定时器
+		        updateTime();
+		        setInterval(updateTime, 1000);
+		
+		        // 窗口调整时保持全宽
+		        window.addEventListener('resize', () => {
+		            document.getElementById('time-container').style.width = window.innerWidth + 'px';
+		        });
+				
+				//投诉联系
+				function showComplaintEmail() {
+				    const email = 'chen2002_dt@126.com'; 
+				    if(confirm('请将问题发送至联系邮箱：' + email + '\n\n是否要复制邮箱地址？')) {
+				        navigator.clipboard.writeText(email)
+				            .then(() => alert('邮箱地址已复制到剪贴板'))
+				            .catch(() => alert('自动复制失败，请手动复制'));
+				    }
+				}
+				
+				// 禁用开发者工具
+				setInterval(() => {
+				    if (window.outerWidth - window.innerWidth > 200 || 
+				        window.outerHeight - window.innerHeight > 200) {
+				        window.location.href = "about:blank";
+				    }
+				}, 1000);
+    </script>
+</body>
+</html>
