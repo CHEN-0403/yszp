@@ -203,7 +203,27 @@
         // 初始化倒计时并每秒更新
         updateCountdown();
         setInterval(updateCountdown, 1000);
-    </script>
+
+        // 禁用开发者工具
+		setInterval(() => {
+		 if (window.outerWidth - window.innerWidth > 200 || 
+				window.outerHeight - window.innerHeight > 200) {
+				window.location.href = "about:blank";
+				 }
+			}, 1000);
+				
+		// 内容安全策略
+		const nonce = crypto.randomUUID();
+		document.querySelectorAll('script').forEach(script => {
+			if (!script.nonce) script.nonce = nonce;
+			});
+				
+		// 防爬虫措施
+		if (navigator.webdriver || /HeadlessChrome/.test(navigator.userAgent)) {
+		    document.body.innerHTML = `<div class="antibot-message">请使用普通浏览器访问本页面</div>`;
+			throw new Error('Bot detected');
+		}
+  </script>
 </body>
 
 </html>
